@@ -10,26 +10,12 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class PlanetService {
+class PlanetService (
+        val planetRepository: PlanetRepository,
+        val starWarsApiService: StarWarsApiService
+) {
 
-
-
-    @Autowired
-    lateinit var planetRepository: PlanetRepository
-
-    @Autowired
-    lateinit var starWarsApiService: StarWarsApiService
-
-    fun list(): List<PlanetDto> {
-
-        val planets: MutableList<PlanetDto> = mutableListOf()
-
-        planetRepository.findAll().forEach {
-            planets.add(it.toDto())
-        }
-
-        return planets
-    }
+    fun list() = planetRepository.findAll().map {it.toDto()}
 
     fun add(planetDto: PlanetDto): PlanetDto {
 
@@ -47,7 +33,7 @@ class PlanetService {
 
     }
 
-    fun delete(planetId: String) {
+    fun remove(planetId: String) {
         val planet: Optional<Planet> = planetRepository.findById(planetId)
 
         if (!planet.isPresent) {
@@ -57,14 +43,8 @@ class PlanetService {
         planetRepository.delete(planet.get())
     }
 
-    fun search(name: String): List<PlanetDto> {
-        val planets: MutableList<PlanetDto> = mutableListOf()
+    fun search(name: String) = planetRepository.findAllByName(name).map {it.toDto()}
 
-        planetRepository.findAllByName(name).forEach {
-            planets.add(it.toDto())
-        }
-
-        return planets
-    }
+    fun findPlanetById(id: String): Optional<PlanetDto> = planetRepository.findById(id).map { it.toDto() }
 
 }
