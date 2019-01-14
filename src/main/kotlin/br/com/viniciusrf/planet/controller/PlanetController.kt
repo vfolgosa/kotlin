@@ -2,6 +2,7 @@ package br.com.viniciusrf.planet.controller
 
 import br.com.viniciusrf.planet.model.PlanetDto
 import br.com.viniciusrf.planet.service.PlanetService
+import io.swagger.annotations.Api
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -9,6 +10,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("planets")
+@Api(value = "Planets", description = "Rest API for Star Wars API", tags = arrayOf("Star Wars API"))
 class PlanetController(
         val planetService: PlanetService
 ){
